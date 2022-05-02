@@ -88,5 +88,4 @@ struct Club transferListGenerator(struct Club s) {
     }
     return s;
 
-  //denemelik push 
 }
