@@ -17,10 +17,10 @@ struct Player {
 };
 
 struct Agent {
-    char agentName[20];
+  /*  char agentName[20];
     Player playerArray[];
     dasdasdasdas;
-    // aaaaaa   try      
+    // aaaaaa   try      */
 
 };
 struct Scout {
