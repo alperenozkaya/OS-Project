@@ -10,6 +10,17 @@ struct Club {
         char transferList[5][2][20];
 	} clubs[]; 
 
+struct Player {
+
+};
+
+struct Agent {
+
+};
+struct Scout {
+
+};
+
 // Let us create a global variable to change it in threads
 int g = 0;
 int budgetLimit[] = {10000000, 2000000, 3000000, 4000000, 5000000};
@@ -87,5 +98,7 @@ struct Club transferListGenerator(struct Club s) {
         
     }
     return s;
+
+
 
 }
