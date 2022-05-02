@@ -8,7 +8,24 @@ struct Club {
 	    char clubName[20];
         int budget;
         char transferList[5][2][20];
-	} clubs[]; 
+	} clubs[5]; 
+
+
+struct Player {
+    char positionName[20];
+    int transferCost;
+
+};
+
+struct Agent {
+    char agentName[20];
+    struct Player* managementList; 
+
+} Agent1;
+
+struct Scout {
+
+};
 
 
 // Let us create a global variable to change it in threads
@@ -17,9 +34,17 @@ int budgetLimit[] = {10000000, 2000000, 3000000, 4000000, 5000000};
 
 struct Club budgetGenerator();
 struct Club transferListGenerator();
+struct Player * resizeArray();
+void incrementInt();
 
 int main()
 {
+
+    printf(" The size of: %d\n", sizeof(Agent1.managementList));
+    
+    resizeArray(Agent1.managementList);
+    
+    printf(" The size of: %d\n", sizeof(Agent1.managementList));
 
     srand(time(NULL));
 
@@ -87,4 +112,32 @@ struct Club transferListGenerator(struct Club s) {
     }
     return s;
 
+}
+
+struct Player * resizeArray(struct Player * a){
+    a = malloc(10 * sizeof(struct Player));
+
+    if(a == NULL) {}     // malloc() was unable to allocate the memory, handle the
+                     // error and DO NOT use this pointer anymore
+
+    
+
+    // suppose 10 ints aren't no more enough:
+    a = realloc(a, 20 * sizeof(struct Player));
+
+    if(a == NULL) {}     // same thing as before
+
+    // here you have 20 ints, the previous 10 are still there
+    //a[18] = a[4]
+
+    // don't forget to free the memory when you have finished:
+    //free(a);
+    return a;
+    
+    
+   
+}
+
+void incrementInt(int a) {
+    a = a + 1;
 }
