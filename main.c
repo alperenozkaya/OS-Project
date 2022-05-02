@@ -10,6 +10,7 @@ struct Club {
         char transferList[5][2][20];
 	} clubs[]; 
 
+<<<<<<< Updated upstream
 struct Player {
 
 };
@@ -25,6 +26,8 @@ struct Scout {
 
 };
 
+=======
+>>>>>>> Stashed changes
 // Let us create a global variable to change it in threads
 int g = 0;
 int budgetLimit[] = {10000000, 2000000, 3000000, 4000000, 5000000};
@@ -82,8 +85,7 @@ struct Club transferListGenerator(struct Club s) {
     
     char agents [4][20] = {"Agent1", "Agent2", "Agent3", "Agent4"};
     char positions [4][20] = {"Forward", "Midfielder", "Defender","Goalkeeper"};
-    
-    
+
     int length = 4;
 /*
     printf("%s", agents[0]);
@@ -99,10 +101,7 @@ struct Club transferListGenerator(struct Club s) {
 
         strcpy(s.transferList[i][0], agents[randAgents]);
         strcpy(s.transferList[i][1], positions[randPositions]);
-        
     }
     return s;
-
-
 
 }
