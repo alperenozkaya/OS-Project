@@ -8,6 +8,7 @@ struct Club {
 	    char clubName[20];
         int budget;
         char transferList[5][2][20];
+        // Player plyerTrnsfrDone()
 	} clubs[5]; 
 
 
@@ -21,8 +22,11 @@ struct Agent {
     char agentName[20];
     struct Player* managementList; 
 
-} Agent1;
+    // ScoutCostUpdate()  ScoutAddNewPlayer
+    
 
+} Agent1;
+// there is no need for scout struct
 struct Scout {
 
 };
