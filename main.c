@@ -75,9 +75,7 @@ struct Club transferListGenerator(struct Club s) {
     printf("%s", agents[1]);
     printf("%s", agents[2]);
     printf("%s", agents[3]);
-
     */
-    
     
     for(int i = 0; i < 5; i++){
         int randAgents = rand()%(length);
@@ -88,8 +86,7 @@ struct Club transferListGenerator(struct Club s) {
         strcpy(s.transferList[i][1], positions[randPositions]);
         
     }
-
     return s;
 
-
+  //denemelik push 
 }
