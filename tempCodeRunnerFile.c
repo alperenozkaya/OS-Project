@@ -1,1 +1,0 @@
-    printf("Thread ID: %d, Static: %d, Global: %d\n", *myid, ++s, ++g);
