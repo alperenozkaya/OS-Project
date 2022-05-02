@@ -15,6 +15,9 @@ struct Player {
 };
 
 struct Agent {
+    char agentName[20];
+    Player playerArray[];
+    dasdasdasdas;
 
 };
 struct Scout {
