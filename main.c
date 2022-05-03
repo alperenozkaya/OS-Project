@@ -49,11 +49,13 @@ struct Player* initializePlayers();
 
 int main()
 {
+    srand(time(NULL));
 
     Agent1.managementList = (struct Player*) malloc(7 *sizeof(struct Player));
+   
     Agent1.managementList = initializePlayers(Agent1.managementList);
 
-    for(int i = 0; i < sizeof(Agent1.managementList); i++){
+    for(int i = 0; i < sizeof(Agent1.managementList) - 1; i++){
         printf("Position: %s   TransferCost %d\n", Agent1.managementList[i].positionName, Agent1.managementList[i].transferCost);
     }
 
@@ -63,8 +65,7 @@ int main()
     
     printf(" The size of: %d\n", sizeof(Agent1.managementList));
 
-    srand(time(NULL));
-
+    
     // name initialization
     strcpy(clubs[0].clubName , "ClubA");
     strcpy(clubs[1].clubName , "ClubB");
@@ -163,7 +164,7 @@ struct Player scoutCostUpdate(struct Player * mngList){
     int mngListLen = sizeof(mngList)/sizeof(struct Player);
 
 
-    for(int i = 0; i < sizeof(mngList); i++ ){
+    for(int i = 0; i < sizeof(mngList) - 1; i++ ){
         if(mngList[i].transferCost != 0 ) {
             int r = rand()%(length);
             mngList[i].transferCost += costChange[r];
@@ -172,10 +173,8 @@ struct Player scoutCostUpdate(struct Player * mngList){
             else if( mngList[i].transferCost >= 22000000)
                 mngList[i].transferCost -= 1000000;
            
-        }
-        
+        }   
     }
-   
     return *mngList;   
 
 }
@@ -191,7 +190,7 @@ struct Player* initializePlayers(struct Player * mngList){
     int mngListLen = sizeof(mngList)/sizeof(struct Player);
 
 
-    for(int i = 0; i < sizeof(mngList); i++ ){
+    for(int i = 0; i < sizeof(mngList) - 1; i++ ){
         
             int transferCost = baseCost * ((rand()%16) + 4);
             mngList[i].transferCost = transferCost;
