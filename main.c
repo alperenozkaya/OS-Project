@@ -3,6 +3,10 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <string.h>
+#include <stdbool.h> 
+
+#define TRUE 1
+#define FALSE 0
 
 struct Club {
 	    char clubName[20];
@@ -22,6 +26,7 @@ struct Agent {
     
     char agentName[20];
     struct Player* managementList;
+    int playerNumber;
 
 
     // ScoutCostUpdate()  ScoutAddNewPlayer
@@ -45,25 +50,37 @@ struct Club transferListGenerator();
 struct Player * resizeArray();
 void incrementInt();
 struct Player* initializePlayers();
+struct Agent addNewPlayers();
+
+
+
 
 
 int main()
 {
+
     srand(time(NULL));
+    Agent1.playerNumber = 7;
+    Agent1.managementList = (struct Player*) malloc(Agent1.playerNumber *sizeof(struct Player));
 
-    Agent1.managementList = (struct Player*) malloc(7 *sizeof(struct Player));
-   
     Agent1.managementList = initializePlayers(Agent1.managementList);
+   
 
-    for(int i = 0; i < sizeof(Agent1.managementList) - 1; i++){
-        printf("Position: %s   TransferCost %d\n", Agent1.managementList[i].positionName, Agent1.managementList[i].transferCost);
+    for(int i = 0; i < Agent1.playerNumber; i++){
+        printf("%d-Position: %s   TransferCost %d\n", i, Agent1.managementList[i].positionName, Agent1.managementList[i].transferCost);
     }
 
-    printf(" The size of: %d\n", sizeof(Agent1.managementList));
+    strcpy(Agent1.managementList[0].positionName, "");
+    Agent1.managementList[0].transferCost = 0;
+
+
+    Agent1 = addNewPlayers(Agent1);
+
+    for(int i = 0; i < Agent1.playerNumber; i++){
+        printf("%d-Position: %s   TransferCost %d\n", i, Agent1.managementList[i].positionName, Agent1.managementList[i].transferCost);
+    }
     
-    resizeArray(Agent1.managementList);
     
-    printf(" The size of: %d\n", sizeof(Agent1.managementList));
 
     
     // name initialization
@@ -91,6 +108,8 @@ int main()
 
        }
    }
+
+
 
     free(Agent1.managementList);
     return 0;
@@ -132,30 +151,6 @@ struct Club transferListGenerator(struct Club s) {
 
 }
 
-struct Player * resizeArray(struct Player * a){
-    a = malloc(10 * sizeof(struct Player));
-
-    if(a == NULL) {}     // malloc() was unable to allocate the memory, handle the
-                     // error and DO NOT use this pointer anymore
-
-    
-
-    // suppose 10 ints aren't no more enough:
-    a = realloc(a, 20 * sizeof(struct Player));
-
-    if(a == NULL) {}     // same thing as before
-
-    // here you have 20 ints, the previous 10 are still there
-    //a[18] = a[4]
-
-    // don't forget to free the memory when you have finished:
-    //free(a);
-    return a;
-    
-    
-   
-}
-
 struct Player scoutCostUpdate(struct Player * mngList){
     
     int costChange[] = {-500000, 0, 1000000};
@@ -185,10 +180,7 @@ struct Player* initializePlayers(struct Player * mngList){
     char positions [4][20] = {"Forward", "Midfielder", "Defender","Goalkeeper"};
 
     int length = 4;
-
-
     int mngListLen = sizeof(mngList)/sizeof(struct Player);
-
 
     for(int i = 0; i < sizeof(mngList) - 1; i++ ){
         
@@ -202,3 +194,47 @@ struct Player* initializePlayers(struct Player * mngList){
     return mngList;   
 
 }
+
+struct Agent addNewPlayers(struct Agent agent){
+    
+    int baseCost = 1000000;
+    char positions [4][20] = {"Forward", "Midfielder", "Defender","Goalkeeper"};
+
+    int length = 4;
+    int isEnough = 0;
+
+    int numPlayers = 0;
+
+    int mngListLen = sizeof(agent.managementList)/sizeof(struct Player);
+
+
+    
+    for(int i = 0; i < agent.playerNumber; i++ ){
+
+        if(agent.managementList[i].transferCost == 0 && agent.managementList[i].positionName == ""){
+            label:
+            printf("%d in jump operation!\n", Agent1.playerNumber);
+            int transferCost = baseCost * ((rand()%16) + 4);
+            agent.managementList[i].transferCost = transferCost;
+            
+            int randPositions = rand()%(length);
+            strcpy(agent.managementList[i].positionName, positions[randPositions]);
+            isEnough = 1;
+            break;
+
+        }
+
+    if (isEnough == 0){   // list is full
+        
+        goto label;
+
+    }
+                                
+}
+agent.playerNumber++;
+    
+printf("%d", agent.playerNumber);
+return agent;  
+}
+    
+
