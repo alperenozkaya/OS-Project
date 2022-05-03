@@ -19,13 +19,17 @@ struct Player {
 };
 
 struct Agent {
+    
     char agentName[20];
-    struct Player* managementList; 
+    struct Player* managementList;
+
 
     // ScoutCostUpdate()  ScoutAddNewPlayer
     
 
 } Agent1;
+
+
 // there is no need for scout struct
 struct Scout {
 
@@ -40,9 +44,18 @@ struct Club budgetGenerator();
 struct Club transferListGenerator();
 struct Player * resizeArray();
 void incrementInt();
+struct Player* initializePlayers();
+
 
 int main()
 {
+
+    Agent1.managementList = (struct Player*) malloc(7 *sizeof(struct Player));
+    Agent1.managementList = initializePlayers(Agent1.managementList);
+
+    for(int i = 0; i < sizeof(Agent1.managementList); i++){
+        printf("Position: %s   TransferCost %d\n", Agent1.managementList[i].positionName, Agent1.managementList[i].transferCost);
+    }
 
     printf(" The size of: %d\n", sizeof(Agent1.managementList));
     
@@ -78,7 +91,7 @@ int main()
        }
    }
 
-   
+    free(Agent1.managementList);
     return 0;
 }
 
@@ -142,6 +155,51 @@ struct Player * resizeArray(struct Player * a){
    
 }
 
-void incrementInt(int a) {
-    a = a + 1;
+struct Player scoutCostUpdate(struct Player * mngList){
+    
+    int costChange[] = {-500000, 0, 1000000};
+    int length = sizeof(costChange)/sizeof(int);
+
+    int mngListLen = sizeof(mngList)/sizeof(struct Player);
+
+
+    for(int i = 0; i < sizeof(mngList); i++ ){
+        if(mngList[i].transferCost != 0 ) {
+            int r = rand()%(length);
+            mngList[i].transferCost += costChange[r];
+            if(mngList[i].transferCost <= 3000000)
+                mngList[i].transferCost += 500000;
+            else if( mngList[i].transferCost >= 22000000)
+                mngList[i].transferCost -= 1000000;
+           
+        }
+        
+    }
+   
+    return *mngList;   
+
+}
+
+struct Player* initializePlayers(struct Player * mngList){
+    
+    int baseCost = 1000000;
+    char positions [4][20] = {"Forward", "Midfielder", "Defender","Goalkeeper"};
+
+    int length = 4;
+
+
+    int mngListLen = sizeof(mngList)/sizeof(struct Player);
+
+
+    for(int i = 0; i < sizeof(mngList); i++ ){
+        
+            int transferCost = baseCost * ((rand()%16) + 4);
+            mngList[i].transferCost = transferCost;
+            
+            int randPositions = rand()%(length);
+            strcpy(mngList[i].positionName, positions[randPositions]);
+                
+        }
+    return mngList;   
+
 }
