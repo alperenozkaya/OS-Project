@@ -4,9 +4,17 @@
 #include <pthread.h>
 #include <string.h>
 #include <stdbool.h>
+#include <semaphore.h>
+
+
 
 #define TRUE 1
 #define FALSE 0
+
+
+
+
+
 
 struct Club
 {
@@ -45,6 +53,23 @@ struct Player *initializePlayers();
 struct Player *scoutCostUpdate();
 struct Agent addNewPlayers();
 void completeTransfer();
+void printSomething();
+
+
+
+void* clubThreadLoop(void* arg){
+    
+    //sem_post(&sem);
+
+    printSomething();
+    
+
+    //sem_wait(&sem);
+    printf("Alperen'den çıktı :");
+
+    return NULL;
+
+}
 
 int main()
 {
@@ -119,6 +144,27 @@ int main()
     }
 
     completeTransfer(clubs[0], Agents);
+
+    // Create threads (5 clubs)  end if the transfer list is completed or the club is out of budget
+    // if out of budget - wait for a period and negotiate second time
+
+    // scout thread
+
+    sem_t sem;
+
+    sem_init(&sem, 0, 0);
+    pthread_t newthread_1;
+    pthread_t newthread_2;
+
+
+    pthread_create(&newthread_1, NULL,clubThreadLoop, NULL);
+    pthread_create(&newthread_2, NULL,clubThreadLoop, NULL);
+
+    pthread_join(newthread_1, NULL);
+    pthread_join(newthread_2, NULL);
+
+
+    
 
 
     // check management lists
@@ -261,37 +307,55 @@ void completeTransfer(struct Club c, struct Agent agents[]) {
     char wantedAgentName[6];
     char wantedPlayerPosition[20];
     int minTransferCost = 100000000;
-    int playerIndex;
+    int agentPlayerIndex;
     int agentIndex;
+    int transferDone = 0;
+    int clubTransferListIndex;
 
-
-
+    
     for(int i = 0; i < 5; i++ ){
         if(c.transferList[i][0] != ""){
+            clubTransferListIndex = i;
             strcpy(wantedAgentName, c.transferList[i][0]);
             strcpy(wantedPlayerPosition, c.transferList[i][1]);
             break;
         }
-    }
-
+    }   
+  // Club A Agent1 Defender   Club B Agent1 Defender  
     for(int x = 0; x < 4; x++){
         printf("1");
         if(strcmp(wantedAgentName, Agents[x].agentName) == 0) {
             printf("2");
             for(int y = 0; y < Agents[x].playerNumber; y++){
                 printf("3");
-                if(strcmp(Agents[x].managementList[y].positionName, wantedPlayerPosition) == 0 && Agents[x].managementList[y].transferCost < minTransferCost) {
+                // mutex lock
+                if(strcmp(Agents[x].managementList[y].positionName, wantedPlayerPosition) == 0 && Agents[x].managementList[y].transferCost < minTransferCost && c.budget > Agents[x].managementList[y].transferCost) {
                     printf("4");
                     minTransferCost = Agents[x].managementList[y].transferCost;
-                    playerIndex = y;
+                    agentPlayerIndex = y;
                     agentIndex = x;
-                    printf("The player index: %d cost: %d  position: %s  agent index: %d\n", playerIndex, Agents[agentIndex].managementList[playerIndex].transferCost, Agents[agentIndex].managementList[playerIndex].positionName, agentIndex);
+                    printf("The player index: %d cost: %d  position: %s  agent index: %d\n", agentPlayerIndex, Agents[agentIndex].managementList[agentPlayerIndex].transferCost, Agents[agentIndex].managementList[agentPlayerIndex].positionName, agentIndex);
+                    transferDone = 1; 
                     }
-
-                }    
-                                      
+                }                          
             }
         } 
+        if(transferDone) {
+            c.budget -= Agents[agentIndex].managementList[agentPlayerIndex].transferCost; // update the budget
+            strcpy(Agents[agentIndex].managementList[agentPlayerIndex].positionName, "");
+            Agents[agentIndex].managementList[agentPlayerIndex].transferCost = 0;
+            
+            strcpy(c.transferList[clubTransferListIndex][0], ""); // set the agent name to ""
+            strcpy(c.transferList[clubTransferListIndex][1], ""); // set the position of wanted player to ""
+
+        }
+
+        // mutex unlock
+    }
+
+
+    void printSomething(){
+        printf("yes it works!");
     }
 
 
