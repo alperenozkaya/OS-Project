@@ -12,6 +12,8 @@
 #define FALSE 0
 
 
+sem_t sem;
+
 
 
 
@@ -53,23 +55,127 @@ struct Player *initializePlayers();
 struct Player *scoutCostUpdate();
 struct Agent addNewPlayers();
 void completeTransfer();
-void printSomething();
+int printSomething();
 
 
 
 void* clubThreadLoop(void* arg){
+    sem_wait(&sem);
+    
     
     //sem_post(&sem);
+    int a = 5;
 
-    printSomething();
+    printf(" %d\n", printSomething(a));
     
+    printf("Alperen'den çıktı :\n");
 
-    //sem_wait(&sem);
-    printf("Alperen'den çıktı :");
+
+
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%d\n", clubs[i].budget);
+    }
+
+    for (int j = 0; j < 5; j++)
+    {
+        printf("Transfer list of club %s with budget €%d:\n", clubs[j].clubName, clubs[j].budget);
+        for (int i = 0; i < 5; i++)
+        {
+
+            printf("%s: %s\n", clubs[j].transferList[i][0], clubs[j].transferList[i][1]);
+        }
+    }
 
     return NULL;
 
 }
+
+void * scoutThreadLoop(void* arg){
+
+    strcpy(Agents[0].agentName, "Agent1");
+    Agents[0].playerNumber = 7;
+    strcpy(Agents[1].agentName, "Agent2");
+    Agents[1].playerNumber = 6;
+    strcpy(Agents[2].agentName, "Agent3");
+    Agents[2].playerNumber = 6;
+    strcpy(Agents[3].agentName, "Agent4");
+    Agents[3].playerNumber = 4;
+
+    // randomly assign players to agents
+    for (int i = 0; i < 4; i++)
+    {
+        Agents[i].managementList = (struct Player *)malloc(Agents[i].playerNumber * sizeof(struct Player));
+        Agents[i].managementList = initializePlayers(Agents[i].managementList);
+    }
+
+
+    // name initialization
+    strcpy(clubs[0].clubName, "ClubA");
+    strcpy(clubs[1].clubName, "ClubB");
+    strcpy(clubs[2].clubName, "ClubC");
+    strcpy(clubs[3].clubName, "ClubD");
+    strcpy(clubs[4].clubName, "ClubE");
+
+    // nested methods to generate and assign random budgets and transfer lists
+    for (int i = 0; i < 5; i++)
+    {
+        clubs[i] = budgetGenerator(transferListGenerator(clubs[i]));
+    }
+
+
+/*
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%d\n", clubs[i].budget);
+    }
+
+    for (int j = 0; j < 5; j++)
+    {
+        printf("Transfer list of club %s with budget €%d:\n", clubs[j].clubName, clubs[j].budget);
+        for (int i = 0; i < 5; i++)
+        {
+
+            printf("%s: %s\n", clubs[j].transferList[i][0], clubs[j].transferList[i][1]);
+        }
+    }
+
+
+    */
+
+    sem_post(&sem);
+
+    
+
+
+
+    /* 
+
+
+    */
+    
+    /*
+    sleep(rand()%5 + 3);
+
+    while (1) {
+        for(int i = 0; i < 4; i++){
+        Agents[i].managementList = scoutCostUpdate(agents[i].managementList);
+    }
+
+
+    for (int i = 0; i < Agents[i].playerNumber; i++)
+    {
+        for (int j = 0; j < Agents[i].playerNumber; j++)
+            printf("%d-Position: %s   TransferCost %d\n", j + 1, Agents[i].managementList[j].positionName, Agents[i].managementList[j].transferCost);
+    }
+    printf("\n");
+
+    */
+   
+return NULL;
+    }
+     
+
 
 int main()
 {
@@ -93,7 +199,7 @@ int main()
         Agents[i].managementList = (struct Player *)malloc(Agents[i].playerNumber * sizeof(struct Player));
         Agents[i].managementList = initializePlayers(Agents[i].managementList);
     }
-
+/*
     for (int i = 0; i < Agents[i].playerNumber; i++)
     {
         for (int j = 0; j < Agents[i].playerNumber; j++)
@@ -115,6 +221,10 @@ int main()
     }
     printf("\n");
 
+    */
+
+
+/*
     // name initialization
     strcpy(clubs[0].clubName, "ClubA");
     strcpy(clubs[1].clubName, "ClubB");
@@ -143,28 +253,35 @@ int main()
         }
     }
 
+    */
+
+   /*
     completeTransfer(clubs[0], Agents);
+
+    */
 
     // Create threads (5 clubs)  end if the transfer list is completed or the club is out of budget
     // if out of budget - wait for a period and negotiate second time
 
     // scout thread
 
-    sem_t sem;
 
     sem_init(&sem, 0, 0);
     pthread_t newthread_1;
-    pthread_t newthread_2;
+    //pthread_t newthread_2;
+    pthread_t scoutThread;
 
 
     pthread_create(&newthread_1, NULL,clubThreadLoop, NULL);
-    pthread_create(&newthread_2, NULL,clubThreadLoop, NULL);
+    //pthread_create(&newthread_2, NULL,clubThreadLoop, NULL);
+    pthread_create(&scoutThread, NULL, scoutThreadLoop, NULL);
+
 
     pthread_join(newthread_1, NULL);
-    pthread_join(newthread_2, NULL);
+    //pthread_join(newthread_2, NULL);
+    pthread_join(scoutThread, NULL);
 
 
-    
 
 
     // check management lists
@@ -354,8 +471,10 @@ void completeTransfer(struct Club c, struct Agent agents[]) {
     }
 
 
-    void printSomething(){
+    int printSomething(int a){
         printf("yes it works!");
+        a++;
+        return a;
     }
 
 
