@@ -48,7 +48,6 @@ int budgetLimit[] = {10000000, 2000000, 3000000, 4000000, 5000000};
 // function prototypes
 struct Club budgetGenerator();
 struct Club transferListGenerator();
-struct Player *resizeArray();
 void incrementInt();
 struct Player *initializePlayers();
 struct Player * scoutCostUpdate();
