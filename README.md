@@ -2,6 +2,7 @@
 OS Term Project
 
 *1.Introduction*
+
 During the transfer window, every football club in the world is keen to sign exceptional
 players. Four well-known football agents are in charge of managing contracts on behalf of
 players throughout the world. Each agent is in charge of four distinct types of players:
@@ -13,6 +14,7 @@ solutions were tried to be found by using POSIX thread, mutex lock, semaphores a
 principles.
 
 *2. Methodology*
+
 In order to figure out this problem, a variety of functions are used. Some of the
 functions provide initializations, the other functions make some calculations
 for the threads that represent clubs and scouts. To make the operations
