@@ -62,3 +62,10 @@ Club completeTransfer()”.
 agents or add new players in random time intervals using the functions
 “struct Player * scoutCostUpdate()”, and struct Club
 completeTransfer().
+
+## Authors
+
+- [@alperenozkaya](https://www.github.com/alperenozkaya)
+- [@cemtzn](https://www.github.com/cemtzn)
+
+
